@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+    <title>Edit</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link href="{{ url_for('static', filename='css/bootstrap.min.css') }}" rel="stylesheet">
+    <!--link href="//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.min.css" rel="stylesheet"-->
+    <link href="{{ url_for('static', filename='css/styles.css') }}" rel="stylesheet">
+</head>
+
+<body>
+    <div class="container">
+        <div class="blog-header">
+            <h1 class="blog-title">Corpus</h1>
+        </div>
+        <h4>Edit Fragment</h4>
+        <div class="row">
+            <div class="col-sm-8 blog-main">
+                <form method="POST" action="">
+                    {{ form.title.label }} {{ form.title(size=300, class_="form-control") }} <br/>
+                    {{ form.text.label }} {{ form.text(cols="35", rows="5", class_="form-control") }} <br/>
+                    {{ form.tags(class_="form-control") }} <br/>
+                    <div>
+                        <button type="submit" class="btn btn-primary">save</button>
+                    </div>
+                </form>
+            </div><!-- blog-main-->
+        </div>
+    </div>
+    <!-- /container full -->
+
+    <!-- script references -->
+    <script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
+    <!--script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.2/jquery.min.js"></script>
+    <script src="{{ url_for('static', filename='js/scripts.js') }}"></script-->
+</body>
+
+</html>
