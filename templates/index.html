@@ -7,7 +7,6 @@
     <title>Home</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <link href="{{ url_for('static', filename='css/bootstrap.min.css') }}" rel="stylesheet">
-    <!--link href="//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.min.css" rel="stylesheet"-->
     <link href="{{ url_for('static', filename='css/styles.css') }}" rel="stylesheet">
 </head>
 
@@ -26,26 +25,7 @@
                 </div><!-- blog-post-->
                 {% endfor %}
             </div><!-- blog-main-->
-            <div class="col-sm-3 col-sm-offset-1 blog-sidebar">
-                <div class="sidebar-module sidebar-module-inset">
-                    <h4>Search Text</h4>
-                    <form class="form-inline" method="GET" action="search">
-                        <div claass="form-group">
-                            <!--label for="inputTextQuery">text</label-->
-                            <input type="text" class="form-control" name="textQuery" id="inputTextQuery">
-                        </div>
-                        <button type="submit" class="btn btn-primary">Search Text</button>
-                    </form>
-                    <h4>Search Tags</h4>
-                    <form class="form-inline" method="GET" action="search">
-                        <div claass="form-group">
-                            <!--label for="inputTagsQuery">tags</label-->
-                            <input type="text" class="form-control" name="tagsQuery" id="inputTagsQuery">
-                        </div>
-                        <button type="submit" class="btn btn-primary">Search Tags</button>
-                    </form>
-                </div>
-            </div>
+            {% include 'search.html' %}
         </div>
     </div>
     <!-- /container full -->

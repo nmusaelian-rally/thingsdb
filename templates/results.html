@@ -4,10 +4,9 @@
 <head>
     <meta http-equiv="content-type" content="text/html; charset=UTF-8">
     <meta charset="utf-8">
-    <title>Search Results, All</title>
+    <title>Search Results</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <link href="{{ url_for('static', filename='css/bootstrap.min.css') }}" rel="stylesheet">
-    <!--link href="//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.min.css" rel="stylesheet"-->
     <link href="{{ url_for('static', filename='css/styles.css') }}" rel="stylesheet">
 </head>
 
@@ -23,9 +22,9 @@
                     <h4 class="blog-post-title">{{ fragment.title }}</h4>
                     <p>{{ fragment.text }}</p>
                     <a href="{{ url_for('show',   id=fragment.id) }}">Details</a>
-                </div><!-- blog-post-->
+                </div>
                 {% endfor %}
-            </div><!-- blog-main-->
+            </div>
             <div class="col-sm-3 col-sm-offset-1 blog-sidebar">
                 <div class="sidebar-module sidebar-module-inset">
                     <h4>Links</h4>
@@ -36,12 +35,6 @@
             </div>
         </div>
     </div>
-    <!-- /container full -->
-
-    <!-- script references -->
     <script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
-    <!--script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.2/jquery.min.js"></script>
-    <script src="{{ url_for('static', filename='js/scripts.js') }}"></script-->
 </body>
-
 </html>

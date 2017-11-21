@@ -1,0 +1,27 @@
+
+<div class="col-sm-3 col-sm-offset-1 blog-sidebar">
+    <div class="sidebar-module sidebar-module-inset">
+        <h4>Search Text</h4>
+        <form class="form-inline" method="GET" action="search">
+            <div claass="form-group">
+                <!--label for="inputTextQuery">text</label-->
+                <input type="text" class="form-control" name="textQuery" id="inputTextQuery">
+            </div>
+            <button type="submit" class="btn btn-primary">Search Text</button>
+        </form>
+        <h4>Search Tags</h4>
+        <form class="form-inline" method="GET" action="search">
+            <div claass="form-group">
+                <!--label for="inputTagsQuery">tags</label-->
+                <input type="text" class="form-control" name="tagsQuery" id="inputTagsQuery">
+            </div>
+            <div class="checkbox">
+                <label>
+                    <input type="checkbox" name="operator">
+                        use AND operator for <br /> comma separated tags<br />(default is OR)
+                </label>
+            </div>
+            <div><button type="submit" class="btn btn-primary">Search Tags</button></div>
+        </form>
+    </div>
+</div>

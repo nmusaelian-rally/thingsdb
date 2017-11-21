@@ -25,9 +25,8 @@
                 <ul class="list-inline">
                     <li class="list-inline-item"><a href="{{ url_for('edit',   id=id) }}">Edit</a></li>
                     <li class="list-inline-item"><a href="{{ url_for('delete', id=id) }}">Delete</a></li>
-                    <!--li class="list-inline-item"><a href="{{ url_for('index', id=id) }}">Home</a></li-->
                 </ul>
-            </div><!-- blog-main-->
+            </div>
                     <div class="col-sm-3 col-sm-offset-1 blog-sidebar">
                 <div class="sidebar-module sidebar-module-inset">
                     <h4>Links</h4>
@@ -37,15 +36,8 @@
                 </div>
               </div>
         </div>
-
-
     </div>
-    <!-- /container full -->
-
-    <!-- script references -->
     <script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
-    <!--script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.2/jquery.min.js"></script>
-    <script src="{{ url_for('static', filename='js/scripts.js') }}"></script-->
 </body>
 
 </html>

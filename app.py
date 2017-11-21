@@ -1,6 +1,6 @@
 from flask import Flask, g, render_template, request, redirect, url_for
 from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy import or_
+from sqlalchemy import or_ , and_
 from flask_wtf import FlaskForm
 from wtforms import StringField, TextAreaField, Field, widgets
 
@@ -80,14 +80,17 @@ def search():
         selected_tags = (request.args.get('tagsQuery')).split(",")
         query = db.session.query(Fragment)
         clauses = [Fragment.tags.any(tag) for tag in selected_tags]
-        fragments = query.filter(or_(*clauses)).all()
+        if request.args.get('operator'):
+            fragments = query.filter(and_(*clauses)).all()
+        else:
+            fragments = query.filter(or_(*clauses)).all()
     return render_template('results.html', fragments=fragments)
 
 
 @app.route('/<int:id>')
 def show(id):
     fragment = Fragment.query.get(id)
-    return render_template('fragment.html', fragment=fragment, id=id)
+    return render_template('show.html', fragment=fragment, id=id)
 
 @app.route('/add', methods=['GET', 'POST'])
 def add():
