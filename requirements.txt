@@ -82,7 +82,7 @@ requests-file==1.4.2
 requests-ftp==0.3.1
 robobrowser==0.5.3
 scipy==0.19.1
-Shapely==1.5.17.post1
+Shapely==1.5.17
 shellescape==3.4.1
 simplegeneric==0.8.1
 six==1.11.0
