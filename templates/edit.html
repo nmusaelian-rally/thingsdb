@@ -14,14 +14,14 @@
 <body>
     <div class="container">
         <div class="blog-header">
-            <h1 class="blog-title">Corpus</h1>
+            <h1 class="blog-title">Things</h1>
         </div>
-        <h4>Edit Fragment</h4>
+        <h4>Edit thing</h4>
         <div class="row">
             <div class="col-sm-8 blog-main">
                 <form method="POST" action="">
                     {{ form.title.label }} {{ form.title(size=300, class_="form-control") }} <br/>
-                    {{ form.text.label }} {{ form.text(cols="35", rows="5", class_="form-control") }} <br/>
+                    {{ form.text.label }} {{ form.text(rows="50", class_="form-control") }} <br/>
                     {{ form.tags(class_="form-control") }} <br/>
                     <div>
                         <button type="submit" class="btn btn-primary">save</button>

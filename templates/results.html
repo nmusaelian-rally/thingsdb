@@ -13,15 +13,15 @@
 <body>
     <div class="container">
         <div class="blog-header">
-            <h1 class="blog-title">Corpus</h1>
+            <h1 class="blog-title">Things</h1>
         </div>
         <div class="row">
             <div class="col-sm-8 blog-main">
-                {% for fragment in fragments %}
+                {% for thing in things %}
                 <div class="blog-post">
-                    <h4 class="blog-post-title">{{ fragment.title }}</h4>
-                    <p>{{ fragment.text }}</p>
-                    <a href="{{ url_for('show',   id=fragment.id) }}">Details</a>
+                    <h4 class="blog-post-title">{{ thing.title }}</h4>
+                    <p>{{ thing.text }}</p>
+                    <a href="{{ url_for('show',   id=thing.id) }}">Details</a>
                 </div>
                 {% endfor %}
             </div>
