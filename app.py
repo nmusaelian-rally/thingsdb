@@ -22,13 +22,13 @@ class Thing(db.Model):
     id     = db.Column(db.Integer, primary_key=True)
     title  = db.Column(db.Text,   unique=False, nullable=True)
     text   = db.Column(db.Text,    unique=False, nullable=True)
-    link   = db.Column(db.String,  unique=False, nullable=True)
+    #link   = db.Column(db.String,  unique=False, nullable=True)
     tags   = db.Column(db.ARRAY(db.String), unique=False, nullable=True)
 
-    def __init__(self, title=title, text=text, link=link, tags=tags):
+    def __init__(self, title=title, text=text, tags=tags):
         self.title = title
         self.text  = text
-        self.link  = link
+        #self.link  = link
         self.tags  = tags.split(",")
 
 class TagListField(Field):
@@ -49,7 +49,7 @@ class TagListField(Field):
 class ThingForm(FlaskForm):
     title = StringField('title')
     text  = TextAreaField('text')
-    link = StringField('link')
+    #link = StringField('link')
     ref = StringField('ref')
     tags = TagListField('tags')
 
@@ -99,7 +99,7 @@ def add():
     if request.method == 'POST':
         thing = Thing(request.form['title'],
                             request.form['text'],
-                            request.form['link'],
+                            #request.form['link'],
                             stripSpaceAndLowerTags(request.form['tags']))
         db.session.add(thing)
         db.session.commit()
