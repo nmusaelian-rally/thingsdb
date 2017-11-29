@@ -3,15 +3,17 @@ html,body {
 }
 
 h1 {
-  font-family: Arial,sans-serif
+  font-family: Arial,sans-serif;
   font-size:80px;
   color:#DDCCEE;
 }
 
-.fragment {
-	color:#DDCCEE;
-}
 
+p.date-style {
+   background: gray;
+   color: white;
+   display:inline-block;
+}
 
 /* Custom container */
 .container-full {
@@ -31,3 +33,5 @@ h1 {
 .v-center {
   margin-top:7%;
 }
+
+

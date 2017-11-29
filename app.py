@@ -4,12 +4,11 @@ from flask import Flask, g, render_template, request, redirect, url_for
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import or_ , and_ , func
 from flask_wtf import FlaskForm
-from wtforms import StringField, TextAreaField, Field, widgets
+from wtforms import StringField, DateField, TextAreaField, Field, widgets
 
 
 app = Flask(__name__)
-# eventually set to os.environ['DATABASE_URL']:
-# app.config['SQLALCHEMY_DATABASE_URI'] = os.environ['DATABASE_URL']
+
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ['DATABASE_URL']
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
 db = SQLAlchemy(app)
@@ -20,16 +19,16 @@ class Thing(db.Model):
     __searchable__ = ['text','tags']
 
     id     = db.Column(db.Integer, primary_key=True)
-    title  = db.Column(db.Text,   unique=False, nullable=True)
+    title  = db.Column(db.Text,    unique=False, nullable=True)
     text   = db.Column(db.Text,    unique=False, nullable=True)
-    #link   = db.Column(db.String,  unique=False, nullable=True)
     tags   = db.Column(db.ARRAY(db.String), unique=False, nullable=True)
+    date   = db.Column(db.Date,    unique=True, nullable=True) # null is not a value
 
-    def __init__(self, title=title, text=text, tags=tags):
+    def __init__(self, title=title, text=text, tags=tags, date=date):
         self.title = title
         self.text  = text
-        #self.link  = link
         self.tags  = tags.split(",")
+        self.date  = date
 
 class TagListField(Field):
     widget = widgets.TextInput()
@@ -49,9 +48,8 @@ class TagListField(Field):
 class ThingForm(FlaskForm):
     title = StringField('title')
     text  = TextAreaField('text')
-    #link = StringField('link')
-    ref = StringField('ref')
-    tags = TagListField('tags')
+    tags  = TagListField('tags')
+    date  = DateField('date')
 
 def stripSpaceAndLowerTags(tags):
     tags = tags.lower()
@@ -99,8 +97,9 @@ def add():
     if request.method == 'POST':
         thing = Thing(request.form['title'],
                             request.form['text'],
-                            #request.form['link'],
-                            stripSpaceAndLowerTags(request.form['tags']))
+                            stripSpaceAndLowerTags(request.form['tags']),
+                            request.form['date'])
+
         db.session.add(thing)
         db.session.commit()
         return redirect(url_for('index'))
@@ -133,6 +132,15 @@ def delete(id):
 @app.route('/confirm')
 def confirm():
     return render_template('confirm.html')
+
+@app.errorhandler(404)
+def pageNotFound(err):
+    return render_template('error404.html', err=err), 404
+
+@app.errorhandler(Exception)
+def handleError(err):
+    print (err)
+    return render_template('error.html', err=err)
 
 if __name__ == '__main__':
     app.secret_key = 's3cr3t'

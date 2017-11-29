@@ -21,6 +21,7 @@
                   {% for thing in things.items %}
                       <div class="blog-post">
                           <h4 class="blog-post-title">{{ thing.title }}</h4>
+                          <p class="date-style">{{ thing.date }}</p>
                           <p>{{ thing.text }}</p>
                           <a href="{{ url_for('show',   id=thing.id) }}">Details</a>
                       </div>
