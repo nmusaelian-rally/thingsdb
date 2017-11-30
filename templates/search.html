@@ -1,18 +1,19 @@
 
 <div class="col-sm-3 col-sm-offset-1 blog-sidebar">
     <div class="sidebar-module sidebar-module-inset">
-        <h4>Search Text</h4>
+        <!--h4>Search Text</h4-->
+        <div class="search-div">
         <form class="form-inline" method="GET" action="search">
             <div claass="form-group">
-                <!--label for="inputTextQuery">text</label-->
                 <input type="text" class="form-control" name="textQuery" id="inputTextQuery">
             </div>
-            <button type="submit" class="btn btn-primary">Search Text</button>
+            <button type="submit" class="btn btn-primary search-btn">Search Text</button>
         </form>
-        <h4>Search Tags</h4>
+        </div>
+        <!--h4>Search Tags</h4-->
+        <div class="search-div">
         <form class="form-inline" method="GET" action="search">
             <div claass="form-group">
-                <!--label for="inputTagsQuery">tags</label-->
                 <input type="text" class="form-control" name="tagsQuery" id="inputTagsQuery">
             </div>
             <div class="checkbox">
@@ -21,7 +22,23 @@
                         use AND operator for <br /> comma separated tags<br />(default is OR)
                 </label>
             </div>
-            <div><button type="submit" class="btn btn-primary">Search Tags</button></div>
+            <button type="submit" class="btn btn-primary search-btn">Search Tags</button>
         </form>
+        </div>
+            <!--h4>Search By Date</h4-->
+        <div class="search-div">
+        <form class="form-inline" method="GET" action="search">
+            <div claass="form-group">
+                <p>
+                <label class="radio-inline"><input type="radio" name="date-radio" value="on">On</label>
+                <label class="radio-inline"><input type="radio" name="date-radio" value="before">Before</label>
+                <label class="radio-inline"><input type="radio" name="date-radio" value="after">After</label>
+                <label class="radio-inline"><input type="radio" name="date-radio" value="between">Between two dates</label>
+                </p>
+                <input type="text" class="form-control" name="dateQuery" id="inputDateQuery" placeholder="2017-01-01,2017-12-31">
+            </div>
+            <button type="submit" class="btn btn-primary search-btn">Search By Date</button>
+        </form>
+        </div>
     </div>
 </div>

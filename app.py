@@ -22,7 +22,7 @@ class Thing(db.Model):
     title  = db.Column(db.Text,    unique=False, nullable=True)
     text   = db.Column(db.Text,    unique=False, nullable=True)
     tags   = db.Column(db.ARRAY(db.String), unique=False, nullable=True)
-    date   = db.Column(db.Date,    unique=True, nullable=True) # null is not a value
+    date   = db.Column(db.Date,    unique=True, nullable=False)
 
     def __init__(self, title=title, text=text, tags=tags, date=date):
         self.title = title
@@ -70,7 +70,8 @@ def view(page=1):
 
 @app.route('/pages/search')
 def search():
-    things = ''
+    things = None
+    i = ''
     if request.args.get('textQuery'):
         txt = "%{}%".format(request.args.get('textQuery'))
         things = Thing.query.filter(Thing.text.ilike(txt)).all()
@@ -78,13 +79,30 @@ def search():
         tags_arr = (request.args.get('tagsQuery')).split(",")
         tags_str = stripSpaceAndLowerTags(','.join(tags_arr))
         tags_arr = tags_str.split(',')
+        i = tags_arr
         query = db.session.query(Thing)
         clauses = [Thing.tags.any(tag) for tag in tags_arr]
         if request.args.get('operator'):
             things = query.filter(and_(*clauses)).all()
         else:
             things = query.filter(or_(*clauses)).all()
-    return render_template('results.html', things=things)
+    if request.args.get('dateQuery'):
+        if request.args.get('date-radio'):
+            date = request.args.get('dateQuery').replace(" ", "")
+            option = request.args.get('date-radio')
+            print ("OPTION: %s" %option)
+            if option == 'on':
+                things = Thing.query.filter_by(date = date)
+            elif option == 'before':
+                things = Thing.query.filter(Thing.date <= date)
+            elif option == 'after':
+                things = Thing.query.filter(Thing.date >= date)
+            elif option == 'between':
+                dates = date.split(',')
+                print("DATES: %s" %dates)
+                things = Thing.query.filter(and_(Thing.date >= dates[0], Thing.date <= dates[1]))
+    return render_template('results.html', things=things, i=i)
+
 
 
 @app.route('/<int:id>')

@@ -34,4 +34,21 @@ p.date-style {
   margin-top:7%;
 }
 
+.search-btn {
+  background-color: #7FB3D5;
+  border: 0px;
+  margin: 5px;
+}
+
+.search-btn:hover  {
+  background-color:#5499C7;
+}
+
+.search-div {
+  border:1px solid #7FB3D5;
+  margin: 5px;
+  padding:5px;
+}
+
+
 
