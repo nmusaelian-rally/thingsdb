@@ -72,22 +72,20 @@ def view(page=1):
 @app.route('/pages/search')
 def search():
     things = None
-    i = ''
-    if request.args.get('textQuery'):
+    if request.args.get('searchText') and request.args.get('textQuery'):
         txt = "%{}%".format(request.args.get('textQuery'))
         things = Thing.query.filter(Thing.text.ilike(txt)).all()
-    if request.args.get('tagsQuery'):
+    if request.args.get('searchTags') and request.args.get('tagsQuery'):
         tags_arr = (request.args.get('tagsQuery')).split(",")
         tags_str = stripSpaceAndLowerTags(','.join(tags_arr))
         tags_arr = tags_str.split(',')
-        i = tags_arr
         query = db.session.query(Thing)
         clauses = [Thing.tags.any(tag) for tag in tags_arr]
         if request.args.get('operator'):
             things = query.filter(and_(*clauses)).all()
         else:
             things = query.filter(or_(*clauses)).all()
-    if request.args.get('dateQuery'):
+    if request.args.get('searchByDate') and request.args.get('dateQuery'):
         if request.args.get('date-radio'):
             date = request.args.get('dateQuery').replace(" ", "")
             option = request.args.get('date-radio')
@@ -101,8 +99,53 @@ def search():
             elif option == 'between':
                 dates = date.split(',')
                 print("DATES: %s" %dates)
-                things = Thing.query.filter(and_(Thing.date >= dates[0], Thing.date <= dates[1]))
-    return render_template('results.html', things=things, i=i)
+                things = Thing.query.filter(and_(Thing.date >= dates[0], Thing.date <= dates[1])).all()
+
+    if request.args.get('searchText') and request.args.get('textQuery') and request.args.get('searchByDate') and request.args.get('dateQuery'):
+        txt = "%{}%".format(request.args.get('textQuery'))
+        if request.args.get('date-radio'):
+            date = request.args.get('dateQuery').replace(" ", "")
+            option = request.args.get('date-radio')
+            print ("OPTION: %s" %option)
+            if option == 'on':
+                things = Thing.query.filter_by(date = date)
+            elif option == 'before':
+                things = Thing.query.filter(Thing.date <= date)
+            elif option == 'after':
+                things = Thing.query.filter(Thing.date >= date)
+            elif option == 'between':
+                dates = date.split(',')
+                print("DATES: %s" %dates)
+                things = Thing.query.filter(and_(Thing.text.ilike(txt), and_(Thing.date >= dates[0], Thing.date <= dates[1]))).all()
+
+    if request.args.get('searchTags') and request.args.get('tagsQuery') and request.args.get('searchByDate') and request.args.get('dateQuery'):
+        tags_arr = (request.args.get('tagsQuery')).split(",")
+        tags_str = stripSpaceAndLowerTags(','.join(tags_arr))
+        tags_arr = tags_str.split(',')
+        query = db.session.query(Thing)
+        clauses = [Thing.tags.any(tag) for tag in tags_arr]
+        if request.args.get('operator'):
+            things = query.filter(and_(*clauses)).all()
+        else:
+            things = query.filter(or_(*clauses)).all()
+        if request.args.get('date-radio'):
+            date = request.args.get('dateQuery').replace(" ", "")
+            option = request.args.get('date-radio')
+            print ("OPTION: %s" %option)
+            if option == 'on':
+                things = Thing.query.filter_by(date = date)
+            elif option == 'before':
+                things = Thing.query.filter(Thing.date <= date)
+            elif option == 'after':
+                things = Thing.query.filter(Thing.date >= date)
+            elif option == 'between':
+                dates = date.split(',')
+                if request.args.get('operator'):
+                    things = Thing.query.filter(and_(*clauses), and_(Thing.date >= dates[0], Thing.date <= dates[1])).all()
+                else:
+                    things = Thing.query.filter(or_(*clauses), and_(Thing.date >= dates[0], Thing.date <= dates[1])).all()
+
+    return render_template('results.html', things=things)
 
 
 
