@@ -19,8 +19,8 @@ class Thing(db.Model):
     __searchable__ = ['text','tags']
 
     id     = db.Column(db.Integer, primary_key=True)
-    title  = db.Column(db.Text,    unique=False, nullable=True)
-    text   = db.Column(db.Text,    unique=False, nullable=True)
+    title  = db.Column(db.Text,    unique=False, nullable=False)
+    text   = db.Column(db.Text,    unique=False, nullable=False)
     tags   = db.Column(db.ARRAY(db.String), unique=False, nullable=True)
     date   = db.Column(db.Date,    unique=True, nullable=False)
 
