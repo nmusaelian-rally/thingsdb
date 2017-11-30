@@ -12,6 +12,7 @@ app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ['DATABASE_URL']
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
 db = SQLAlchemy(app)
+app.secret_key = 's3cr3t'
 
 
 class Thing(db.Model):
@@ -161,6 +162,5 @@ def handleError(err):
     return render_template('error.html', err=err)
 
 if __name__ == '__main__':
-    app.secret_key = 's3cr3t'
     app.debug = True
     app.run()
