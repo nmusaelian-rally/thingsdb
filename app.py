@@ -118,9 +118,16 @@ def search():
         if request.args.get('date-radio'):
             things = Thing.query.filter(and_(searchText(), searchByDate())).all()
 
+    if text_selected and tags_selected:
+        things = Thing.query.filter(and_(searchText(), searchTags())).all()
+
     if tags_selected and date_selected:
         if request.args.get('date-radio'):
             things = Thing.query.filter(and_(searchTags(), searchByDate())).all()
+
+    if text_selected and tags_selected and date_selected:
+        if request.args.get('date-radio'):
+            things = Thing.query.filter(and_(searchText(), searchTags(), searchByDate())).all()
 
     return render_template('results.html', things=things)
 
