@@ -46,11 +46,21 @@ p.date-style {
 
 .search-div {
   border:1px solid #7FB3D5;
-  margin: 5px;
+  margin: 15px;
   padding:5px;
 }
 
 .search-checkbox {
   font-weight: bold;
 }
+/*
+.search-help {
+  float: left;
+  clear: both;
+  border: 0px;
+}*/
+
+.search-help {
+  color: #5499C7;
+ }
 

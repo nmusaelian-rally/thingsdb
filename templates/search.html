@@ -1,6 +1,6 @@
 
 <div class="col-sm-3 col-sm-offset-1 blog-sidebar">
-    <div class="sidebar-module sidebar-module-inset">
+    <div class="sidebar-module sidebar-module-inset search-help">
         <form class="form-inline" method="GET" action="search">
             <div class="search-div">
             <div claass="form-group">
@@ -47,5 +47,18 @@
             </div>
             <button type="submit" class="btn btn-primary search-btn">Search</button>
         </form>
+        <div class="container">
+            <button type="submit" data-toggle="collapse" data-target="#help">
+                <i class="fa fa-expand"></i><span class="search-help">...show/hide search help</span>
+            </button>
+            <div id="help" class="collapse search-help">
+                <p>Multiple criteria search uses AND operator</p>
+                Steps:<br />
+                - Type search criteria in the intput field<br />
+                - Select relevant checkbox<br />
+                - Optional: Repeat for multiple criteria<br />
+                - Click Search button<br />
+            </div>
+        </div>
         </div>
 </div>
