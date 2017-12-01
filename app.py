@@ -72,78 +72,55 @@ def view(page=1):
 @app.route('/pages/search')
 def search():
     things = None
-    if request.args.get('searchText') and request.args.get('textQuery'):
+
+    def searchText():
         txt = "%{}%".format(request.args.get('textQuery'))
-        things = Thing.query.filter(Thing.text.ilike(txt)).all()
-    if request.args.get('searchTags') and request.args.get('tagsQuery'):
+        return Thing.text.ilike(txt)
+
+    def searchTags():
         tags_arr = (request.args.get('tagsQuery')).split(",")
         tags_str = stripSpaceAndLowerTags(','.join(tags_arr))
         tags_arr = tags_str.split(',')
-        query = db.session.query(Thing)
         clauses = [Thing.tags.any(tag) for tag in tags_arr]
         if request.args.get('operator'):
-            things = query.filter(and_(*clauses)).all()
+            return and_(*clauses)
         else:
-            things = query.filter(or_(*clauses)).all()
-    if request.args.get('searchByDate') and request.args.get('dateQuery'):
-        if request.args.get('date-radio'):
-            date = request.args.get('dateQuery').replace(" ", "")
-            option = request.args.get('date-radio')
-            print ("OPTION: %s" %option)
-            if option == 'on':
-                things = Thing.query.filter_by(date = date)
-            elif option == 'before':
-                things = Thing.query.filter(Thing.date <= date)
-            elif option == 'after':
-                things = Thing.query.filter(Thing.date >= date)
-            elif option == 'between':
-                dates = date.split(',')
-                print("DATES: %s" %dates)
-                things = Thing.query.filter(and_(Thing.date >= dates[0], Thing.date <= dates[1])).all()
+            return or_(*clauses)
 
-    if request.args.get('searchText') and request.args.get('textQuery') and request.args.get('searchByDate') and request.args.get('dateQuery'):
-        txt = "%{}%".format(request.args.get('textQuery'))
-        if request.args.get('date-radio'):
-            date = request.args.get('dateQuery').replace(" ", "")
-            option = request.args.get('date-radio')
-            print ("OPTION: %s" %option)
-            if option == 'on':
-                things = Thing.query.filter_by(date = date)
-            elif option == 'before':
-                things = Thing.query.filter(Thing.date <= date)
-            elif option == 'after':
-                things = Thing.query.filter(Thing.date >= date)
-            elif option == 'between':
-                dates = date.split(',')
-                print("DATES: %s" %dates)
-                things = Thing.query.filter(and_(Thing.text.ilike(txt), and_(Thing.date >= dates[0], Thing.date <= dates[1]))).all()
+    def searchByDate():
+        date = request.args.get('dateQuery').replace(" ", "")
+        option = request.args.get('date-radio')
+        if option == 'on':
+            return Thing.date == date
+        elif option == 'before':
+            return Thing.date <= date
+        elif option == 'after':
+            return Thing.date >= date
+        elif option == 'between':
+            dates = date.split(',')
+            return and_(Thing.date >= dates[0], Thing.date <= dates[1])
 
-    if request.args.get('searchTags') and request.args.get('tagsQuery') and request.args.get('searchByDate') and request.args.get('dateQuery'):
-        tags_arr = (request.args.get('tagsQuery')).split(",")
-        tags_str = stripSpaceAndLowerTags(','.join(tags_arr))
-        tags_arr = tags_str.split(',')
-        query = db.session.query(Thing)
-        clauses = [Thing.tags.any(tag) for tag in tags_arr]
-        if request.args.get('operator'):
-            things = query.filter(and_(*clauses)).all()
-        else:
-            things = query.filter(or_(*clauses)).all()
+    text_selected = request.args.get('searchText') and request.args.get('textQuery')
+    tags_selected = request.args.get('searchTags') and request.args.get('tagsQuery')
+    date_selected = request.args.get('searchByDate') and request.args.get('dateQuery')
+
+    if text_selected:
+        things = Thing.query.filter(searchText()).all()
+
+    if tags_selected:
+        things = Thing.query.filter(searchTags()).all()
+
+    if date_selected:
         if request.args.get('date-radio'):
-            date = request.args.get('dateQuery').replace(" ", "")
-            option = request.args.get('date-radio')
-            print ("OPTION: %s" %option)
-            if option == 'on':
-                things = Thing.query.filter_by(date = date)
-            elif option == 'before':
-                things = Thing.query.filter(Thing.date <= date)
-            elif option == 'after':
-                things = Thing.query.filter(Thing.date >= date)
-            elif option == 'between':
-                dates = date.split(',')
-                if request.args.get('operator'):
-                    things = Thing.query.filter(and_(*clauses), and_(Thing.date >= dates[0], Thing.date <= dates[1])).all()
-                else:
-                    things = Thing.query.filter(or_(*clauses), and_(Thing.date >= dates[0], Thing.date <= dates[1])).all()
+            things = Thing.query.filter(searchByDate()).all()
+
+    if text_selected and date_selected:
+        if request.args.get('date-radio'):
+            things = Thing.query.filter(and_(searchText(), searchByDate())).all()
+
+    if tags_selected and date_selected:
+        if request.args.get('date-radio'):
+            things = Thing.query.filter(and_(searchTags(), searchByDate())).all()
 
     return render_template('results.html', things=things)
 
