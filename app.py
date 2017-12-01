@@ -5,6 +5,7 @@ from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import or_ , and_ , func
 from flask_wtf import FlaskForm
 from wtforms import StringField, DateField, TextAreaField, Field, widgets
+import datetime
 
 
 app = Flask(__name__)
@@ -15,7 +16,7 @@ db = SQLAlchemy(app)
 #app.secret_key = 's3cr3t'
 app.secret_key  = 'troglodyt3'
 
-
+today = datetime.date.today().strftime("%Y-%m-%d")
 class Thing(db.Model):
     __tablename__ = 'things'
     __searchable__ = ['text','tags']
@@ -150,7 +151,7 @@ def add():
         db.session.add(thing)
         db.session.commit()
         return redirect(url_for('index'))
-    return render_template('add.html')
+    return render_template('add.html', today=today)
 
 @app.route('/edit/<int:id>', methods=['GET','POST'])
 def edit(id):

@@ -22,7 +22,7 @@
                 <form method="POST" action="">
                     {{ form.title.label }} {{ form.title(size=300, class_="form-control") }} <br/>
                     {{ form.text.label }} {{ form.text(rows="50", class_="form-control") }} <br/>
-                    {{ form.date.label }} {{ form.date }} <br/>
+                    {{ form.date.label }} {{ form.date(class_="form-control") }} <br/>
                     {{ form.tags(class_="form-control") }} <br/>
                     <div>
                         <button type="submit" class="btn btn-primary">save</button>
