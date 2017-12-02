@@ -20,7 +20,7 @@
                 <div class="blog-post">
                     <h4 class="blog-post-title">{{ thing.title }}</h4>
                     <p class="date-style">{{ thing.date }}</p>
-                    <p>{{ thing.text | markdown }}</p>
+                    <div class="txt-div">{{ thing.text | markdown }}</div>
                     <h6 class="blog-post-footer">{{', '.join(thing.tags)}}</h6>
                 </div><!-- blog-post-->
                 <ul class="list-inline">
