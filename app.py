@@ -1,19 +1,19 @@
 import os
 import re
-from flask import Flask, g, render_template, request, redirect, url_for
+from flask import Flask, Markup, render_template, request, redirect, url_for
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import or_ , and_ , func
 from flask_wtf import FlaskForm
 from wtforms import StringField, DateField, TextAreaField, Field, widgets
 import datetime
-
+from flask_misaka import Misaka
 
 app = Flask(__name__)
+Misaka(app)
 
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ['DATABASE_URL']
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
 db = SQLAlchemy(app)
-#app.secret_key = 's3cr3t'
 app.secret_key  = 'troglodyt3'
 
 today = datetime.date.today().strftime("%Y-%m-%d")
