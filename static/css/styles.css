@@ -44,7 +44,7 @@ p.date-style {
   background-color:#5499C7;
 }
 
-.search-div {
+.search-div, .txt-div {
   border:1px solid #7FB3D5;
   margin: 15px;
   padding:5px;
