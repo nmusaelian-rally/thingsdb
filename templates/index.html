@@ -23,7 +23,7 @@
                     <div class="txt-div">{{ thing.text | markdown }}</div>
                     <p class="date-style">{{ thing.date }}</p>
                     <ul class="list-inline">
-                        <li class="list-inline-item"><a href="{{ url_for('show',   id=thing.id) }}">Single-page</a></li>
+                        <li class="list-inline-item"><a href="{{ url_for('show',   id=thing.id) }}">Single-post</a></li>
                         <li class="list-inline-item"><a href="{{ url_for('edit',   id=thing.id) }}">Edit</a></li>
                         <li class="list-inline-item"><a href="{{ url_for('delete', id=thing.id) }}">Delete</a></li>
                     </ul>
