@@ -1,12 +1,14 @@
 import os
 import re
-from flask import Flask, Markup, render_template, request, redirect, url_for
+from flask import Flask, Response, request, redirect, url_for, abort, render_template
+from flask_login import LoginManager, UserMixin, login_required, login_user, logout_user
 from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy import or_ , and_ , func
+from flask_misaka import Misaka
+from sqlalchemy import or_ , and_
 from flask_wtf import FlaskForm
 from wtforms import StringField, DateField, TextAreaField, Field, widgets
 import datetime
-from flask_misaka import Misaka
+
 
 app = Flask(__name__)
 Misaka(app)
@@ -15,6 +17,24 @@ app.config['SQLALCHEMY_DATABASE_URI'] = os.environ['DATABASE_URL']
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
 db = SQLAlchemy(app)
 app.secret_key  = 'troglodyt3'
+
+login_manager = LoginManager()
+login_manager.init_app(app)
+login_manager.login_view = "login"
+
+class User(UserMixin):
+    def __init__(self, id=1):
+        self.id = id
+        self.name = os.environ['USER']
+        self.password = os.environ['PASSWORD']
+        print ("%s:%s" %(self.name, self.password))
+
+    def __repr__(self):
+        return "%d/%s/%s" % (self.id, self.name, self.password)
+
+user = User()
+
+
 
 today = datetime.date.today().strftime("%Y-%m-%d")
 class Thing(db.Model):
@@ -61,10 +81,46 @@ def stripSpaceAndLowerTags(tags):
     return tags
 
 @app.route('/')
+@login_required
 def index():
     return redirect(url_for('view', page=1))
 
+@app.route("/login", methods=["GET", "POST"])
+def login():
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
+        if username == os.environ['USER'] and password == os.environ['PASSWORD']:
+            login_user(user)
+            return redirect(url_for('view', page=1))
+        else:
+            return abort(401)
+    else:
+        return Response('''
+        <form action="" method="post">
+            <p><input type=text name=username>
+            <p><input type=password name=password>
+            <p><input type=submit value=Login>
+        </form>
+        ''')
+
+@app.route("/logout")
+@login_required
+def logout():
+    logout_user()
+    return Response('<p>Logged out</p>')
+
+@app.errorhandler(401)
+def page_not_found(err):
+    return render_template('success.html')
+
+@login_manager.user_loader
+def load_user(userid):
+    return User(userid)
+
+
 @app.route('/pages/<int:page>',methods=['GET'])
+@login_required
 def view(page=1):
     per_page = 5
     things = Thing.query.order_by(Thing.id.desc()).paginate(page,per_page,error_out=True)
@@ -72,6 +128,7 @@ def view(page=1):
 
 
 @app.route('/pages/search')
+@login_required
 def search():
     things = None
 
@@ -136,11 +193,13 @@ def search():
 
 
 @app.route('/<int:id>')
+@login_required
 def show(id):
     thing = Thing.query.get(id)
     return render_template('show.html', thing=thing, id=id)
 
 @app.route('/add', methods=['GET', 'POST'])
+@login_required
 def add():
     if request.method == 'POST':
         thing = Thing(request.form['title'],
@@ -154,6 +213,7 @@ def add():
     return render_template('add.html', today=today)
 
 @app.route('/edit/<int:id>', methods=['GET','POST'])
+@login_required
 def edit(id):
     thing = Thing.query.get(id)
     form = ThingForm(obj=thing)
@@ -168,6 +228,7 @@ def edit(id):
     return render_template('edit.html', thing=thing, id=id, form=form)
 
 @app.route('/delete/<int:id>', methods=['GET','POST'])
+@login_required
 def delete(id):
     thing = Thing.query.get(id)
     if request.method == 'POST':
@@ -178,6 +239,7 @@ def delete(id):
     return render_template('delete.html', thing=thing, id=id)
 
 @app.route('/confirm')
+@login_required
 def confirm():
     return render_template('confirm.html')
 
