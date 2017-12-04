@@ -27,7 +27,6 @@ class User(UserMixin):
         self.id = id
         self.name = os.environ['USER']
         self.password = os.environ['PASSWORD']
-        print ("%s:%s" %(self.name, self.password))
 
     def __repr__(self):
         return "%d/%s/%s" % (self.id, self.name, self.password)
@@ -111,7 +110,7 @@ def logout():
     return Response('<p>Logged out</p>')
 
 @app.errorhandler(401)
-def page_not_found(err):
+def forO1(err):
     return render_template('success.html')
 
 @login_manager.user_loader
