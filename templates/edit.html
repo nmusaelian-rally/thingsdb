@@ -35,7 +35,8 @@
 
     <!-- script references -->
     <script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
-    <script src="https://cdn.ckeditor.com/4.9.1/standard/ckeditor.js"></script>
+    <script src="{{ url_for('static', filename='ckeditor/ckeditor.js') }}"></script>
+    <!--script src="https://cdn.ckeditor.com/4.9.1/standard/ckeditor.js"></script-->
     <script type="text/javascript">
       CKEDITOR.replace('inputText')
    </script>
