@@ -21,7 +21,7 @@
             <div class="col-sm-8 blog-main">
                 <form method="POST" action="">
                     {{ form.title.label }} {{ form.title(size=300, class_="form-control") }} <br/>
-                    {{ form.text.label }} {{ form.text(rows="50", class_="form-control") }} <br/>
+                    {{ form.text.label }} {{ form.text(rows="50", class_="form-control", id="inputText") }} <br/>
                     {{ form.date.label }} {{ form.date(class_="form-control") }} <br/>
                     {{ form.tags(class_="form-control") }} <br/>
                     <div>
@@ -35,6 +35,10 @@
 
     <!-- script references -->
     <script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
+    <script src="https://cdn.ckeditor.com/4.9.1/standard/ckeditor.js"></script>
+    <script type="text/javascript">
+      CKEDITOR.replace('inputText')
+   </script>
     <!--script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.2/jquery.min.js"></script>
     <script src="{{ url_for('static', filename='js/scripts.js') }}"></script-->
 </body>
